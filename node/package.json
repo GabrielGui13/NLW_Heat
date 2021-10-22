@@ -1,0 +1,19 @@
+{
+  "name": "Node_Heat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/GabrielGui13/NLW_Heat.git",
+  "author": "GabrielGui13 <gabrielguilherme13@hotmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev src/app.ts"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4"
+  }
+}
