@@ -1,6 +1,6 @@
 import axios from "axios"
 import prismaClient from "../prisma"
-import { sign } from 'jsonwebtoken' 
+import { sign, Secret } from 'jsonwebtoken'
 /* 
     Receber code(string)
     Recuperar o access_token no github
@@ -29,7 +29,7 @@ class AuthenticateUserService {
         const { data: accessTokenResponse } = await axios.post<IAccessTokenResponse>(url, null, {
             params: {
                 client_id: process.env.GITHUB_CLIENT_ID,
-                client_Secret: process.env.GITHUB_CLIENT_SECRET,
+                client_secret: process.env.GITHUB_CLIENT_SECRET,
                 code
             },
             headers: {
@@ -37,11 +37,14 @@ class AuthenticateUserService {
             }
         }) //para retornar apenas o access_token
 
-        const response = await axios.get<IUserResponse>("https://api.github/user", {
+        const response = await axios.get<IUserResponse>("https://api.github.com/user", {
             headers: {
-                authorization: `Bearer ${accessTokenResponse.access_token}`
+                Authorization: `Bearer ${accessTokenResponse.access_token}`
             }
         })
+            .catch(e => {
+                return e
+            })
 
         const { login, id, avatar_url, name } = response.data;
 
@@ -63,14 +66,19 @@ class AuthenticateUserService {
         }
 
         const token = sign({
-            user: {
-                name: user.name,
-                avatar_url: user.avatar_url,
-                id: user.id
-            }
-        })
+                user: {
+                    name: user.name,
+                    avatar_ur: user.avatar_url,
+                    id: user.id,
+                },
+            }, process.env.JWT_SECRET as string,
+            {
+                subject: user.id,
+                expiresIn: "1d"
+            },
+        );
 
-        return response.data;
+        return { token, user };
     }
 }
 

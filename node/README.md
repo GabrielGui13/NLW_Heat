@@ -12,6 +12,10 @@
     yarn prisma migrate dev
     ```
     => roda o prisma.schema, cria a database, a query, etc
+* ```shell
+    yarn prisma studio
+    ```
+    => abre uma porta no localhost para acessar a database
 
 ### Github OAuth
 * Acessa o https://github.com/settings/developers
