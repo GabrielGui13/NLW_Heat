@@ -44,6 +44,9 @@ export function AuthProvider(props: AuthProvider) {
 
         localStorage.setItem("@dowhile:token", token);
 
+        api.defaults.headers.common.authorization = `Bearer ${token}` //define nos headers como padrao o token
+        //mesmo que o user nao de refresh ja tem
+
         setUser(user);
     }
 
